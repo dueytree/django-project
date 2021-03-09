@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ADMINS = [
+    ('Junhyun Choi', 'dueytree.00@gmail.com'),
+]
+
 
 # Application definition
 
@@ -40,8 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third Apps
+    'bootstrap4',
     'debug_toolbar',
     # Locals Apps
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -87,6 +93,10 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+AUTH_USER_MODEL = "accounts.User"
+
 
 
 # Password validation
@@ -135,3 +145,14 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 INTERNAL_IPS = ['127.0.0.1']
+
+
+# Email with Send Grid
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+WELCOME_EMAIL_SENDER = 'dueytree.00@gmail.com'
