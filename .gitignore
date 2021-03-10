@@ -7,3 +7,5 @@ db.sqlite3
 sendgrid.env
 .vscode
 logo.png
+requirements.txt
+.requirements
