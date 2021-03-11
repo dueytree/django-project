@@ -5,12 +5,16 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.enums import ChoicesMeta
 from django.template.loader import render_to_string
+from django.shortcuts import resolve_url
 
 
 class User(AbstractUser):
     class GenderChoices(models.TextChoices):
         MALE = "M", "남성"
         FEMAIL = "F", "여성"
+
+    follower_set = models.ManyToManyField("self", blank=True)
+    following_set = models.ManyToManyField("self", blank=True)
 
     website_url = models.URLField(blank=True)
     bio = models.TextField(blank=True)
@@ -20,6 +24,16 @@ class User(AbstractUser):
     avatar = models.ImageField(blank=True, upload_to="accounts/avatar/%Y/%m/%d",
                               help_text="48px * 48px 크기의 ppng/jpg 파일을 업로드해주세요.")
 
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def avatar_url(self):
+        if self.avatar:
+            return self.avatar.url
+        else:
+            return resolve_url("pydenticon_image", self.username)
 
     def send_welcome_email(self):
         subject = render_to_string("accounts/welcome_email_subject.txt", {
